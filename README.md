@@ -6,7 +6,7 @@ https://imgur.com/a/H2kVKsV
 
 This hooks "IternetOpenUrl" and just printing the second arg/lpszUrl.
 
-##How to use?
+## How to use?
 Just inject this DLL in the program on startup or before the image is being streamed.
 
 ## Why did I create this?
