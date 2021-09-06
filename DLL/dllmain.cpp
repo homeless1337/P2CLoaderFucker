@@ -26,8 +26,6 @@ HINTERNET InternetOpenUrlA_Hooked(
     printf("function called! \n");
     printf("[+] DLLlink -> %s\n", lpszUrl);
 
-    Sleep(-1);
-
     return InternetOpenUrlAOrig(hInternet, lpszUrl, lpszHeaders, dwHeadersLength, dwFlags, dwContext);
 }
 
