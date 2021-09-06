@@ -15,3 +15,5 @@ I made this because i saw many P2C(Pay to cheat aka paid cheats)'s using this me
 
 Credits:
 Minhook : https://github.com/TsudaKageyu/minhook
+
+note : the pastebin link is example only, the link will be an actual dll when using on real cheats.
