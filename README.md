@@ -6,6 +6,9 @@ https://imgur.com/a/H2kVKsV
 
 This hooks "IternetOpenUrl" and just printing the second arg/lpszUrl.
 
+##How to use?
+Just inject this DLL in the program on startup or before the image is being streamed.
+
 ## Why did I create this?
 
 I made this because i saw many P2C(Pay to cheat aka paid cheats)'s using this method and it was released under "Plague loader" (according to my research, you can create an issue if im wrong.). Many people were challenging me that their loader is secure and can never be cracked.
