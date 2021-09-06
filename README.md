@@ -11,7 +11,7 @@ Just inject this DLL in the program on startup or before the image is being stre
 
 ## Why did I create this?
 
-I made this because i saw many P2C(Pay to cheat aka paid cheats)'s using this method and it was released under "interstellar open source paste loader" (according to my research, you can create an issue if im wrong.). Many people were challenging me that their loader is secure and can never be cracked.
+I made this because i saw many P2C(Pay to cheat aka paid cheats)'s using this method and it was released under "interstellar open source loader" (according to my research, you can create an issue if im wrong.). Many people were challenging me that their loader is secure and can never be cracked.
 
 Credits:
 Minhook : https://github.com/TsudaKageyu/minhook
