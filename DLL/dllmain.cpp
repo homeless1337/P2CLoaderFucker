@@ -1,11 +1,18 @@
+//Windows Includes
 #include <Windows.h>
-#include <Wininet.h>
 #include <iostream>
+#include <Wininet.h>
+#pragma comment(lib, "Wininet.lib")
 
+//MinHook
 #include "MinHook.h"
-#pragma comment(lib, "wininet.lib")
 
-HINTERNET(*InternetOpenUrlAOrig)(
+//Disable Warnings
+#pragma warning( disable : 26812 )
+#pragma warning( disable : 6387 )
+
+
+HINTERNET(*InternetOpenUrl_Original)(
     HINTERNET hInternet,
     LPCSTR lpszUrl,
     LPCSTR lpszHeaders,
@@ -14,7 +21,8 @@ HINTERNET(*InternetOpenUrlAOrig)(
     DWORD_PTR dwContext
 );
 
-HINTERNET InternetOpenUrlA_Hooked(
+
+HINTERNET InternetOpenUrl_Hook(
     HINTERNET hInternet,
     LPCSTR lpszUrl,
     LPCSTR lpszHeaders,
@@ -23,44 +31,38 @@ HINTERNET InternetOpenUrlA_Hooked(
     DWORD_PTR dwContext
 )
 {
-    printf("function called! \n");
-    printf("[+] DLLlink -> %s\n", lpszUrl);
+    std::cout << std::endl << "  InternetOpenUrl has been called!" << std::endl;
+    std::cout << "  Arguments:" << std::endl;
+    std::cout << "  [+] hInternet -> " << hInternet << std::endl;
+    std::cout << "  [+] lpszUrl (Image Link) -> " << lpszUrl << std::endl << std::endl;
 
-    Sleep(-1);
-
-    return InternetOpenUrlAOrig(hInternet, lpszUrl, lpszHeaders, dwHeadersLength, dwFlags, dwContext);
+    return InternetOpenUrl_Original(hInternet, lpszUrl, lpszHeaders, dwHeadersLength, dwFlags, dwContext);
 }
 
-BOOL APIENTRY DllMain(HMODULE hModule,
-    DWORD  ul_reason_for_call,
-    LPVOID lpReserved
-)
+
+BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)
 {
 
     if (ul_reason_for_call == DLL_PROCESS_ATTACH)
     {
-        auto init = MH_Initialize();
+        std::cout << std::endl;
 
-        if(init != MH_OK)
-            printf("Unable to hook.");
+        if(MH_Initialize() != MH_OK)
+            std::cout << "Unable to Initialize MinHook." << std::endl;
 
-        auto base = GetModuleHandleA("Wininet.dll");
-        auto addr = GetProcAddress(base, "InternetOpenUrlA");
+        HMODULE WininetBase = GetModuleHandleA("Wininet.dll");
 
-        if (!base || !addr)
-        {
-            printf("Invalid base or address.");
-        }
+        LPVOID InternetOpenUrlAddr = GetProcAddress(WininetBase, "InternetOpenUrlA");
 
-        std::cout << "Wininet base : " << base << std::endl;
-        std::cout << "InternetOpenUrlA addr : " << addr << std::endl;
+        if (!WininetBase || !InternetOpenUrlAddr)
+            std::cout << "Invalid base or address." << std::endl;
 
-        MH_CreateHook(addr, InternetOpenUrlA_Hooked, (LPVOID*)InternetOpenUrlAOrig);
-        auto hook = MH_EnableHook(addr);
-        if (hook != MH_OK)
-            printf("Unable to hook.");
+        std::cout << "  [+] Wininet Base : " << WininetBase << std::endl;
+        std::cout << "  [+] InternetOpenUrl Address : " << InternetOpenUrlAddr << std::endl;
+
+        MH_CreateHook(InternetOpenUrlAddr, InternetOpenUrl_Hook, (LPVOID*)&InternetOpenUrl_Original) != MH_OK ? printf("Unable To Create the Hook.") : NULL;
+        MH_EnableHook(InternetOpenUrlAddr) != MH_OK ? printf("Unable To Hook.") : NULL;
     }
 
     return TRUE;
 }
-
