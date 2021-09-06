@@ -55,7 +55,7 @@ BOOL APIENTRY DllMain(HMODULE hModule,
         std::cout << "Wininet base : " << base << std::endl;
         std::cout << "InternetOpenUrlA addr : " << addr << std::endl;
 
-        MH_CreateHook(addr, InternetOpenUrlA_Hooked, (LPVOID*)InternetOpenUrlAOrig);
+        MH_CreateHook(addr, InternetOpenUrlA_Hooked, (LPVOID*)&InternetOpenUrlAOrig);
         auto hook = MH_EnableHook(addr);
         if (hook != MH_OK)
             printf("Unable to hook.");
